@@ -116,9 +116,10 @@ def record_break_time(current_session, total_session, break_time_minutes=5): # b
 		minutes_digits.insert(0, 0)
 
 
-	play_song()
+	song_name = play_song()
 	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:
 		print(f'do enjoy your time {username}')
+		print(f'now playing : {song_name}')
 		minutes_digits, seconds_digits = countdown_time(
 			minutes_digits, seconds_digits, current_session, total_session)
 
@@ -131,6 +132,8 @@ def play_song():
 	"""
 	play a random song
 	from the musics directory
+
+	return the name of the song
 	"""
 	playlist = os.listdir('musics') # get list of songs in musics directory
 	pick_a_song = random.choice(playlist)
@@ -141,6 +144,8 @@ def play_song():
 	mixer.music.load(f'musics/{pick_a_song}')
 	mixer.music.play(loops=-1) # unlimited loop
 
+
+	return pick_a_song
 
 
 
@@ -183,11 +188,11 @@ while study:
 	print()
 
 
-	print('very well, your wish shall be granted')
+	print('very well, your wish shall be granted.')
 	time.sleep(1.5)
 
 
-	print('timer will start in')
+	print('your timer will start in ...')
 	time.sleep(1)
 	print(3)
 	time.sleep(1)
