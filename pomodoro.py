@@ -209,5 +209,4 @@ while study:
 	if prompt == 'n':
 		print('do enjoy your remaining time')
 		study = False
-	else:
-		pass
+
