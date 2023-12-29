@@ -95,7 +95,7 @@ def record_study_time(study_time_minutes, current_session, total_session):
 			minutes_digits, seconds_digits, current_session, total_session)
 		
 
-def record_break_time(current_session, total_session, break_time_minutes=1): # break_time_minutes is last because of default argument
+def record_break_time(current_session, total_session, break_time_minutes=5): # break_time_minutes is last because of default argument
 	"""
 	records the break time
 	play song while in break
