@@ -53,7 +53,10 @@ def countdown_time(minutes_digits, seconds_digits, current_session, total_sessio
 
 
 	time.sleep(1)
-	os.system('clear')
+	if os.name == 'posix':
+		os.system('clear')
+	elif os.name == 'nt':
+		os.system('cls')
 
 
 	# applying changes made
@@ -64,20 +67,21 @@ def countdown_time(minutes_digits, seconds_digits, current_session, total_sessio
 	return minutes_digits, seconds_digits
 
 
-def record_study_time(study_time_minutes, current_session, total_session):
+def display_time(time_minutes, current_session, total_session, is_break_time, name_song=None):
 	"""
-	records the study time 
+	displays the remaining time 
 	
 	parameters:
-	- study_time_minutes (int) : the total study time in minutes
+	- time_minutes       (int) : the total time in minutes
 	- current_session	 (int) : current_session
 	- total_session      (int) : total session
+	- is break time      (boolean) : determine if it is study time or break time
 
 	stop when the time is completed
 	"""
 
 	# using lists to store values
-	minutes_digits = list(map(int, str(study_time_minutes)))
+	minutes_digits = list(map(int, str(time_minutes)))
 	seconds_digits = [0, 0] 
 
 	# case example
@@ -86,46 +90,16 @@ def record_study_time(study_time_minutes, current_session, total_session):
 	# >> 15:00 >> 14:59 >> 14:58 >> ... >> 10:01 >> 01:01
 
 	# handling special cases
-	if study_time_minutes < 10:
+	if time_minutes < 10:
 		minutes_digits.insert(0, 0)
 
 
 	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:
-		minutes_digits, seconds_digits = countdown_time(
-			minutes_digits, seconds_digits, current_session, total_session)
-		
-
-def record_break_time(current_session, total_session, break_time_minutes=5): # break_time_minutes is last because of default argument
-	"""
-	records the break time
-	play song while in break
-
-	parameters:
-	- break_time_minutes (int) : the total break time in minutes
-	- current_session	 (int) : current session
-	- total_session      (int) : total session
-
-	stop when the time is completed
-	"""
-
-	# using lists to store values
-	minutes_digits = list(map(int, str(break_time_minutes)))
-	seconds_digits = [0, 0]
-
-	if break_time_minutes < 10:
-		minutes_digits.insert(0, 0)
-
-
-	song_name = play_song()
-	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:
-		print(f'do enjoy your time {username}')
-		print(f'now playing : {song_name}')
+		if is_break_time:
+			print(f'now playing : {name_song}')
 		minutes_digits, seconds_digits = countdown_time(
 			minutes_digits, seconds_digits, current_session, total_session)
 
-
-	mixer.music.stop()
-	mixer.music.unload()
 
 
 def play_song():
@@ -174,15 +148,15 @@ while study:
 
 
 	while True:
-		study_time_minutes = input('how many minutes your study time will be? ')
-		if study_time_minutes.isdigit() is False:
+		time_minutes = input('how many minutes your study time will be? ')
+		if time_minutes.isdigit() is False:
 			print('input error, please use an integer.')
 			continue
-		if int(study_time_minutes) > 90:
+		if int(time_minutes) > 90:
 			print('don\'t get ahead of yourself!')
 			continue
 		break
-	study_time_minutes = int(study_time_minutes)
+	time_minutes = int(time_minutes)
 
 
 	print()
@@ -190,7 +164,6 @@ while study:
 
 	print('very well, your wish shall be granted.')
 	time.sleep(1.5)
-
 
 	print('your timer will start in ...')
 	time.sleep(1)
@@ -203,8 +176,16 @@ while study:
 
 	total_session = sessions
 	for current_session in range(1, sessions + 1):
-		record_study_time(study_time_minutes, current_session, total_session)
-		record_break_time(current_session, total_session) # default break time is 5 minutes by default, it actually can be customized but meh 5 is good enough for me
+		# study time
+		display_time(time_minutes, current_session, total_session, is_break_time=False)
+
+
+		# break time
+		name_song = play_song()
+		display_time(time_minutes=5, current_session=current_session, total_session=total_session, is_break_time=True, name_song=name_song)
+
+		mixer.music.stop()
+		mixer.music.unload()
 
 
 	print('Congrulations!!!, you have completed the study sessions')
