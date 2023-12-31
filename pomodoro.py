@@ -47,16 +47,8 @@ def countdown_time(minutes_digits, seconds_digits, current_session, total_sessio
 		ones_second = ones_second - 1
 
 
-	print(f'{current_session}/{total_session}')
 	remaining_time = Panel(Text(f'{tens_minute}{ones_minute}:{tens_second}{ones_second}', justify="center"))
 	print(remaining_time)
-
-
-	time.sleep(1)
-	if os.name == 'posix':
-		os.system('clear')
-	elif os.name == 'nt':
-		os.system('cls')
 
 
 	# applying changes made
@@ -67,7 +59,7 @@ def countdown_time(minutes_digits, seconds_digits, current_session, total_sessio
 	return minutes_digits, seconds_digits
 
 
-def display_time(time_minutes, current_session, total_session, is_break_time, name_song=None):
+def display_time(time_minutes, current_session, total_session, is_break_time=False, name_song=None):
 	"""
 	displays the remaining time 
 	
@@ -97,8 +89,17 @@ def display_time(time_minutes, current_session, total_session, is_break_time, na
 	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:
 		if is_break_time:
 			print(f'now playing : {name_song}')
+
+		print(f'{current_session}/{total_session}')
+
 		minutes_digits, seconds_digits = countdown_time(
 			minutes_digits, seconds_digits, current_session, total_session)
+
+		# freeze the screen first then clear the terminal
+		time.sleep(1)
+
+		# portable based on operating system's terminal
+		os.system('clear' if os.name == 'posix' else 'cls')
 
 
 
@@ -127,7 +128,7 @@ def play_song():
 #############################################################
 #############################################################
 
-
+print(f'Hello {username.title()}')
 print('\\-------------------------/')
 print('|welcome to pomodoro timer|'.upper())
 print('/-------------------------\\')
@@ -137,10 +138,10 @@ study = True
 while study:
 
 
-	sessions = input('how many sessions would you like? ')
+	sessions = input('enter the number of sessions: ')
 	while sessions.isdigit() is False:
 		print('input error, please use an integer.')
-		sessions = input('how many sessions would you like? ')
+		sessions = input('enter the number of sessions ')
 	sessions = int(sessions)
 
 
@@ -148,7 +149,7 @@ while study:
 
 
 	while True:
-		time_minutes = input('how many minutes your study time will be? ')
+		time_minutes = input('enter the number of study time (in minutes): ')
 		if time_minutes.isdigit() is False:
 			print('input error, please use an integer.')
 			continue
@@ -162,9 +163,7 @@ while study:
 	print()
 
 
-	print('very well, your wish shall be granted.')
-	time.sleep(1.5)
-
+	print('very well')
 	print('your timer will start in ...')
 	time.sleep(1)
 	print(3)
@@ -177,7 +176,7 @@ while study:
 	total_session = sessions
 	for current_session in range(1, sessions + 1):
 		# study time
-		display_time(time_minutes, current_session, total_session, is_break_time=False)
+		display_time(time_minutes, current_session, total_session, is_break_time=False, name_song=None)
 
 
 		# break time
