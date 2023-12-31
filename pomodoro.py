@@ -13,15 +13,13 @@ from rich.text import Text # modify output
 username = getpass.getuser()
 
 
-def countdown_time(minutes_digits, seconds_digits, current_session, total_session):
+def countdown_time(minutes_digits, seconds_digits):
 	"""
 	displays the remaining time
 
 	parameters:
 	- minutes_digits   (list of integers) : remaining minutes
 	- seconds_digits   (list of integers) : remaining seconds
-	- current_session  (int)			  : current session
-	- total_session    (int)			  : total session
 
 	return list(minutes_digits) and list(seconds_digits)
 	------------------core of the problems-------------------
