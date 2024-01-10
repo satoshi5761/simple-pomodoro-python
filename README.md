@@ -11,7 +11,5 @@
   </ul>
 </p>
 
-<h2>
-  made this because I keep using pomodoro  
-</h2>
+
 
