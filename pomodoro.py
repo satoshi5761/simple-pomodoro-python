@@ -90,8 +90,7 @@ def display_time(time_minutes, current_session, total_session, is_break_time=Fal
 
 		print(f'{current_session}/{total_session}')
 
-		minutes_digits, seconds_digits = countdown_time(
-			minutes_digits, seconds_digits, current_session, total_session)
+		minutes_digits, seconds_digits = countdown_time(minutes_digits, seconds_digits)
 
 		# freeze the screen first then clear the terminal
 		time.sleep(1)
@@ -169,6 +168,7 @@ while study:
 	print(2)
 	time.sleep(1)
 	print(1)
+	time.sleep(1)
 
 
 	total_session = sessions
@@ -189,7 +189,7 @@ while study:
 	prompt = input('would you like to study more? (y/n) ').lower()
 
 
-	if prompt == 'n':
+	if prompt.startswith("n"):
 		print('do enjoy your remaining time')
 		study = False
 
