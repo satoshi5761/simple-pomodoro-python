@@ -122,15 +122,15 @@ def play_song():
 	return pick_a_song
 
 def play_intro_song():
-	intro_song = mixer.Sound("musics/intro.mp3")
+	intro_song = mixer.Sound("musics1.1/intro.mp3")
 	intro_song.play()
 
 def play_break_song():
-	break_song = mixer.Sound("musics/break.mp3")
+	break_song = mixer.Sound("musics1.1/break.mp3")
 	break_song.play()
 
 def play_break_finished():
-	break_finished_song = mixer.Sound("musics/break_finished.mp3")
+	break_finished_song = mixer.Sound("musics1.1/break_finished.mp3")
 	break_finished_song.play()
 
 
