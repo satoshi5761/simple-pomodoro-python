@@ -207,6 +207,5 @@ while study:
 
 
 	if prompt.startswith("n"):
-		print('do enjoy your remaining time')
 		study = False
 
