@@ -63,10 +63,10 @@ def display_time(time_minutes, current_hour, total_hour, is_break_time=False, na
 	displays the remaining time 
 	
 	parameters:
-	- time_minutes       (int) : the total time in minutes
+	- time_minutes   (int) : the total time in minutes
 	- current_hour	 (int) : current_hour
-	- total_hour      (int) : total hour
-	- is break time      (boolean) : determine if it is study time or break time
+	- total_hour     (int) : total hour
+	- is break time  (boolean) : determine if it is study time or break time
 
 	stop when the time is completed
 	"""
