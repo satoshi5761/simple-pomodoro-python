@@ -10,7 +10,7 @@ from rich.panel import Panel # modify output
 from rich.text import Text # modify output
 
 
-TIME_MINUTES = 1 # default for study time
+TIME_MINUTES = 30 # default for study time
 BREAK_MINUTES = 3 # default for break time
 username = getpass.getuser()
 
@@ -112,7 +112,7 @@ def random_song() -> str:
 	return the name of the song
 	"""
 	playlist = os.listdir('musics') # get list of songs in musics directory
-	pick_a_song = random.choice(playlist)
+	pick_a_song = [random.choice(playlist) for _ in range(5)]
 
 	return pick_a_song
 
@@ -143,7 +143,7 @@ def choose_your_song():
 			print("Please input an integer(s)")
 			continue
 		else:
-			if song == 0:
+			if song == [0]:
 				return random_song()
 			return [playlist[idx] for idx in song]
 
@@ -187,6 +187,7 @@ study = True
 while study:
 
 	my_song_list = choose_your_song()
+	print(my_song_list)
 
 	hours = input('how many hours would you like: ')
 	while hours.isdigit() is False:
