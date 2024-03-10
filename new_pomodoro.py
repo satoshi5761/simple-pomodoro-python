@@ -5,7 +5,7 @@ import getpass
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # it removes pre hello message from pygame
 from pygame import mixer # play music
-from rich import print # modify output
+from rich import print # modify output ---> damn, it's just like rust pretty printing!!!
 from rich.panel import Panel # modify output
 from rich.text import Text # modify output
 
@@ -111,7 +111,7 @@ def random_song() -> str:
 	from the musics directory
 	return the name of the song
 	"""
-	playlist = os.listdir('musics') # get list of songs in musics directory
+	playlist = sorted(os.listdir('musics')) # get list of songs in musics directory
 	pick_a_song = [random.choice(playlist) for _ in range(5)]
 
 	return pick_a_song
@@ -132,7 +132,7 @@ def choose_your_song():
 	"""
 	pick your song(s) to be played in the end of break time
 	"""
-	playlist = {idx: song for (idx, song) in enumerate(os.listdir("musics"), start=1)}
+	playlist = {idx: song for (idx, song) in enumerate(sorted(os.listdir("musics")), start=1)}
 	for (idx, song) in playlist.items():
 		print(f"[{idx}] {song}")
 	
@@ -198,10 +198,8 @@ while study:
 	get_study_time_finished(hours)
 	time.sleep(1.5)
 
-	print()
 
-	print('very well')
-	print('your timer will start in ...')
+	print('Your timer will start in ...')
 	time.sleep(1)
 	print(3)
 	time.sleep(1)
