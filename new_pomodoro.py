@@ -11,7 +11,7 @@ from rich.text import Text # modify output
 
 
 TIME_MINUTES = 30 # default for study time
-BREAK_MINUTES = 3 # default for break time
+BREAK_MINUTES = 5 # default for break time
 username = getpass.getuser()
 
 
@@ -220,7 +220,6 @@ while study:
 		# break time
 		break_song.play()
 		my_song = mixer.Sound(f"musics/{my_song_list[i % len(my_song_list)]}")
-		print(my_song)
 		time.sleep(0.3)
 		display_time(BREAK_MINUTES, current_hour, total_hour, my_song, is_break_time=True)
 
