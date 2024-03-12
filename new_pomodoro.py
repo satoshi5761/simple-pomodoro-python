@@ -10,8 +10,9 @@ from rich.panel import Panel # modify output
 from rich.text import Text # modify output
 
 
-TIME_MINUTES = 1 # default for study time
+TIME_MINUTES = 30 # default for study time
 BREAK_MINUTES = 5 # default for break time
+FADE_OUT_TIME = BREAK_MINUTES * 60 * 1000 # stop song in miliseconds
 username = getpass.getuser()
 
 
@@ -43,11 +44,7 @@ def display_time(time_minutes, current_hour, total_hour, is_break_time=False):
 		minutes_digits.insert(0, 0)
 
 
-	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:
-		# if is_break_time:
-		# 	mixer.music.play()
-		
-
+	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:		
 		print(f'{current_hour}/{total_hour}')
 
 		minutes_digits, seconds_digits = countdown_time(minutes_digits, seconds_digits)
@@ -224,7 +221,8 @@ while study:
 
 		# break time
 		mixer.music.load(f"musics/{my_song_list[i % len(my_song_list)]}")
-		mixer.music.play()
+		mixer.music.play(loops=-1)
+		mixer.music.fadeout(FADE_OUT_TIME)
 		display_time(BREAK_MINUTES, current_hour, total_hour, is_break_time=True)
 		mixer.music.unload()
 
