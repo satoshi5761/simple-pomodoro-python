@@ -10,21 +10,21 @@ from rich.panel import Panel # modify output
 from rich.text import Text # modify output
 
 
-TIME_MINUTES = 30 # default for study time
+TIME_MINUTES = 1 # default for study time
 BREAK_MINUTES = 5 # default for break time
 username = getpass.getuser()
 
 
-
-def display_time(time_minutes, current_hour, total_hour, my_song=None, is_break_time=False):
+def display_time(time_minutes, current_hour, total_hour, is_break_time=False):
 	"""
 	displays the remaining time 
 	
 	parameters:
-	- time_minutes   (int) : the total time in minutes
-	- current_hour	 (int) : current_hour
-	- total_hour     (int) : total hour
-	- is break time  (boolean) : determine if it is study time or break time
+	- time_minutes   	(int)	 : the total time in minutes
+	- current_hour	 	(int)	 : current_hour
+	- total_hour     	(int)	 : total hour
+	- my_song_playtime	(list)   : when to play then song
+	- is break time  	(boolean): determine if it is study time or break time
 
 	stop when the time is completed
 	"""
@@ -44,10 +44,8 @@ def display_time(time_minutes, current_hour, total_hour, my_song=None, is_break_
 
 
 	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:
-		if is_break_time:
-			minutes_song_play, seconds_song_play = when_to_play_song(my_song)
-			if minutes_digits == minutes_song_play and seconds_digits == seconds_song_play:
-				my_song.play() # time is almost up but please enjoy the song
+		# if is_break_time:
+		# 	mixer.music.play()
 		
 
 		print(f'{current_hour}/{total_hour}')
@@ -59,6 +57,7 @@ def display_time(time_minutes, current_hour, total_hour, my_song=None, is_break_
 
 		# portable based on operating system's terminal
 		os.system('clear' if os.name == 'posix' else 'cls')
+		
 
 
 def countdown_time(minutes_digits, seconds_digits):
@@ -101,7 +100,6 @@ def countdown_time(minutes_digits, seconds_digits):
 	minutes_digits[0], minutes_digits[1] = tens_minute, ones_minute
 	seconds_digits[0], seconds_digits[1] = tens_second, ones_second
 
-
 	return minutes_digits, seconds_digits
 
 
@@ -117,15 +115,6 @@ def random_song() -> str:
 	return pick_a_song
 
 
-def when_to_play_song(song) -> tuple[list[int], list[int]]:
-	"""
-	calculate precisely when is the right time to play the song 
-	which is near the end of break time
-	"""
-	length_of_song = song.get_length() # in seconds
-	minutes_song = int(length_of_song / 60)
-	seconds_song = int(length_of_song - minutes_song * 60)
-	return [0, minutes_song], [seconds_song // 10, seconds_song % 10] # ajaran Pak Yuan Lukito ternyata berguna
 
 
 def choose_your_song():
@@ -146,6 +135,16 @@ def choose_your_song():
 			if song == [0]:
 				return random_song()
 			return [playlist[idx] for idx in song]
+
+def when_to_play_song(song) -> list[list[int], list[int]]: # broken function do not use it; makes the song distorted after 2 or 3 times playing
+	"""
+	calculate precisely when is the right time to play the song 
+	which is near the end of break time
+	"""
+	length_of_song = mixer.Sound(f"musics/{song}").get_length() # in seconds
+	minutes_song = int(length_of_song / 60)
+	seconds_song = int(length_of_song - minutes_song * 60)
+	return [[0, minutes_song], [seconds_song // 10, seconds_song % 10]] # ajaran Pak Yuan Lukito ternyata berguna
 
 def get_study_time_finished(hours: int) -> None:
 	"""
@@ -168,26 +167,31 @@ def get_study_time_finished(hours: int) -> None:
 
 	print(f"Your study will be finished at {time_hour}:{time_minute}")
 
+
 mixer.init()
-intro_song = mixer.Sound("musics1.1/intro.mp3")
-break_song = mixer.Sound("musics1.1/break.mp3")
+# INTRO_SONG = mixer.Sound("musics1.1/intro.mp3")
+# BREAK_SONG = mixer.Sound("musics1.1/break.mp3")
 ##############################################################################################################################################################
 ##############################################################################################################################################################
 ##############################################################################################################################################################
 ##############################################################################################################################################################
 ##############################################################################################################################################################
 
-print(f'Hello {username.title()}')
-print('\\-------------------------/')
-print('|welcome to pomodoro timer|'.upper())
-print('/-------------------------\\')
 
 
 study = True
 while study:
+	print(f'Hello {username.title()}')
+	print('\\-------------------------/')
+	print('|welcome to pomodoro timer|'.upper())
+	print('/-------------------------\\')
 
 	my_song_list = choose_your_song()
 	print(my_song_list)
+
+	#													minute	 second    minute  second	 minute  second
+	# list of lists of the exact time to play the song [[[0, 2], [2, 6]], [[0, 2], [3, 4]], [[0, 2], [0, 5]]]
+	# my_song_playtime_list = [when_to_play_song(song) for song in my_song_list]
 
 	hours = input('how many hours would you like: ')
 	while hours.isdigit() is False:
@@ -207,22 +211,22 @@ while study:
 	time.sleep(1)
 	print(1)
 	time.sleep(1)
-	intro_song.play()
+
+
+
 
 
 	total_hour = hours
-	current_hour = 0 
+	current_hour = 0
 	for i in range(hours * 2):
 		# study time
 		display_time(TIME_MINUTES, current_hour, total_hour)
 
-
 		# break time
-		break_song.play()
-		my_song = mixer.Sound(f"musics/{my_song_list[i % len(my_song_list)]}")
-		time.sleep(0.3)
-		display_time(BREAK_MINUTES, current_hour, total_hour, my_song, is_break_time=True)
-
+		mixer.music.load(f"musics/{my_song_list[i % len(my_song_list)]}")
+		mixer.music.play()
+		display_time(BREAK_MINUTES, current_hour, total_hour, is_break_time=True)
+		mixer.music.unload()
 
 		# increment hour
 		current_hour = current_hour + 0.5
