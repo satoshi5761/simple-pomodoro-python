@@ -1,10 +1,12 @@
 import time
-import os 
+import os
 import random
 import getpass
+import pydub
+from pydub import playback
+
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # it removes pre hello message from pygame
-from pygame import mixer # play music
 from rich import print # modify output ---> damn, it's just like rust pretty printing!!!
 from rich.panel import Panel # modify output
 from rich.text import Text # modify output
@@ -12,11 +14,10 @@ from rich.text import Text # modify output
 
 TIME_MINUTES = 30 # default for study time
 BREAK_MINUTES = 5 # default for break time
-FADE_OUT_TIME = BREAK_MINUTES * 60 * 1000 # stop song in miliseconds
 username = getpass.getuser()
 
 
-def display_time(time_minutes, current_hour, total_hour, is_break_time=False):
+def display_time(time_minutes, current_hour, total_hour, when_to_play_song=None, current_song=None, is_break_time=False):
 	"""
 	displays the remaining time 
 	
@@ -44,7 +45,13 @@ def display_time(time_minutes, current_hour, total_hour, is_break_time=False):
 		minutes_digits.insert(0, 0)
 
 
-	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:		
+	while minutes_digits != [0, 0] or seconds_digits != [0, 0]:
+		if is_break_time:
+			minutes_song, seconds_song = when_to_play_song(current_song)
+			if minutes_digits == minutes_song and seconds_digits == seconds_song:
+				playback.play(current_song)		
+				break
+
 		print(f'{current_hour}/{total_hour}')
 
 		minutes_digits, seconds_digits = countdown_time(minutes_digits, seconds_digits)
@@ -138,7 +145,7 @@ def when_to_play_song(song) -> list[list[int], list[int]]: # broken function do 
 	calculate precisely when is the right time to play the song 
 	which is near the end of break time
 	"""
-	length_of_song = mixer.Sound(f"musics/{song}").get_length() # in seconds
+	length_of_song = int(song.duration_seconds) # in seconds
 	minutes_song = int(length_of_song / 60)
 	seconds_song = int(length_of_song - minutes_song * 60)
 	return [[0, minutes_song], [seconds_song // 10, seconds_song % 10]] # ajaran Pak Yuan Lukito ternyata berguna
@@ -165,7 +172,11 @@ def get_study_time_finished(hours: int) -> None:
 	print(f"Your study will be finished at {time_hour}:{time_minute}")
 
 
-mixer.init()
+def get_current_song(idx: int, my_song_list: list) -> str:
+	song = pydub.AudioSegment.from_mp3(f"musics/{my_song_list[idx % len(my_song_list)]}")
+	return song
+
+
 # INTRO_SONG = mixer.Sound("musics1.1/intro.mp3")
 # BREAK_SONG = mixer.Sound("musics1.1/break.mp3")
 ##############################################################################################################################################################
@@ -220,11 +231,9 @@ while study:
 		display_time(TIME_MINUTES, current_hour, total_hour)
 
 		# break time
-		mixer.music.load(f"musics/{my_song_list[i % len(my_song_list)]}")
-		mixer.music.play(loops=-1)
-		mixer.music.fadeout(FADE_OUT_TIME)
-		display_time(BREAK_MINUTES, current_hour, total_hour, is_break_time=True)
-		mixer.music.unload()
+		current_song = get_current_song(i, my_song_list)
+		display_time(BREAK_MINUTES, current_hour, total_hour, when_to_play_song, current_song, is_break_time=True)
+
 
 		# increment hour
 		current_hour = current_hour + 0.5
