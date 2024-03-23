@@ -2,11 +2,10 @@ import time
 import os
 import random
 import getpass
-import pydub
-from pydub import playback
 
+import pydub # modify audio 
+from pydub import playback # play audio
 
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1' # it removes pre hello message from pygame
 from rich import print # modify output ---> damn, it's just like rust pretty printing!!!
 from rich.panel import Panel # modify output
 from rich.text import Text # modify output
@@ -184,7 +183,7 @@ def get_current_song(idx: int, my_song_list: list) -> str:
 ##############################################################################################################################################################
 ##############################################################################################################################################################
 ##############################################################################################################################################################
-
+break_sound = pydub.AudioSegment.from_mp3(f"musics1.1/break.mp3")
 
 
 study = True
@@ -222,8 +221,6 @@ while study:
 
 
 
-
-
 	total_hour = hours
 	current_hour = 0
 	for i in range(hours * 2):
@@ -232,6 +229,7 @@ while study:
 
 		# break time
 		current_song = get_current_song(i, my_song_list)
+		playback.play(break_sound)
 		display_time(BREAK_MINUTES, current_hour, total_hour, when_to_play_song, current_song, is_break_time=True)
 
 
