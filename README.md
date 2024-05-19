@@ -1,21 +1,39 @@
 # simple-pomodoro-python
 
-new_pomodoro.py is my second version ( made this because pygame's mixer started acting up )
-pomodoro.py is my first version
+new_pomodoro.py is my second version (made this because pygame's mixer started acting up)
+<br> pomodoro.py is my first version 
 
-<p>
-  with 5 minutes break and song while in break <br>
-  <ul> extension module : 
-    <li> pydub (need to be installed with pip) </li> ( for my second version )
-    <li> pygame (need to be installed with pip) </li> ( for my first version )
-    <li> rich (need to be installed with pip) </li>
-    <li> os (pre-installed) </li>
-    <li> time (pre-installed) </li>
-    <li> getpass (pre-installed) </li>
-  </ul>
-</p>
+<br>
+<br>
+<p>with 5 minutes break and song while in break</p>
+<ul>
+  <li>extension module:
+    <ul>
+      <li>second version:
+        <ul>
+          <li>pydub (need to be installed with pip) </li>
+        </ul>
+      </li>
+      <li>first version:
+        <ul>
+          <li>pygame (need to be installed with pip) </li>
+        </ul>
+      </li>
+      <li>both versions:
+        <ul>
+          <li>rich (need to be installed with pip)</li>
+          <li>os (pre-installed)</li>
+          <li>time (pre-installed)</li>
+          <li>getpass (pre-installed)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 
 
-
+<br>
+<br>
 P.S.
+<br>
 my very first project that I made 
