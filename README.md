@@ -3,7 +3,7 @@
 <p>
   with 5 minutes break and song while in break <br>
   <ul> extension module : 
-    <li> pygame (need to be installed with pip) </li>
+    <li> pydub (need to be installed with pip) </li>
     <li> rich (need to be installed with pip) </li>
     <li> os (pre-installed) </li>
     <li> time (pre-installed) </li>
