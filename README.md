@@ -32,8 +32,4 @@ new_pomodoro.py is my second version (made this because pygame's mixer started a
 </ul>
 
 
-<br>
-<br>
-P.S.
-<br>
-my very first project that I made 
+
